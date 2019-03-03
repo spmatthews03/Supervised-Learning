@@ -65,11 +65,11 @@ if __name__ == '__main__':
         #     'name': 'pen_digits',
         #     'readable_name': 'Handwritten Digits',
         # }
-        {
-            'data': loader.BattingBaseballData(verbose=verbose, seed=seed),
-            'name': 'batting_data',
-            'readable_name': 'Batting Stats',
-        },
+        # {
+        #     'data': loader.BattingBaseballData(verbose=verbose, seed=seed),
+        #     'name': 'batting_data',
+        #     'readable_name': 'Batting Stats',
+        # },
         {
             'data': loader.PitchingBaseballData(verbose=verbose, seed=seed),
             'name': 'pitching_data',

@@ -2,7 +2,7 @@ import time
 
 import sys
 
-sys.path.append("./ABAGAIL.jar")
+sys.path.append("/opt/GATECH/ML/Supervised-Learning/CS-7641-assignments/assignment2/ABAGAIL/ABAGAIL.jar")
 
 import dist.DiscreteDependencyTree as DiscreteDependencyTree
 import dist.DiscreteUniformDistribution as DiscreteUniformDistribution

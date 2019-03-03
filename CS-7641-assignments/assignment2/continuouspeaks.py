@@ -2,7 +2,9 @@ import time
 
 import sys
 
-sys.path.append("./ABAGAIL.jar")
+sys.path.append("/opt/GATECH/ML/Supervised-Learning/CS-7641-assignments/assignment2/ABAGAIL/ABAGAIL.jar")
+
+# sys.path.append("./ABAGAIL.jar")
 
 import dist.DiscreteDependencyTree as DiscreteDependencyTree
 import dist.DiscreteUniformDistribution as DiscreteUniformDistribution
@@ -32,7 +34,7 @@ Commandline parameter(s):
 """
 
 N = 100
-T = 29
+T = 5
 maxIters = 5001
 numTrials = 5
 fill = [2] * N

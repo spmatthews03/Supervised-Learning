@@ -5,7 +5,7 @@ from time import clock
 
 import sys
 
-sys.path.append("./ABAGAIL.jar")
+sys.path.append("/opt/GATECH/ML/Supervised-Learning/CS-7641-assignments/assignment2/ABAGAIL/ABAGAIL.jar")
 import java.util.Random as Random
 
 import dist.DiscreteDependencyTree as DiscreteDependencyTree
