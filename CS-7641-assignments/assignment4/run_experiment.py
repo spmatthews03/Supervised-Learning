@@ -34,6 +34,7 @@ if __name__ == '__main__':
     parser.add_argument('--q', action='store_true', help='Run the Q-Learner experiment')
     parser.add_argument('--all', action='store_true', help='Run all experiments')
     parser.add_argument('--plot', action='store_true', help='Plot data results')
+    parser.add_argument('--extra_plot', action='store_true', help='Give me more plots')
     parser.add_argument('--verbose', action='store_true', help='If true, provide verbose output')
     args = parser.parse_args()
     verbose = args.verbose
@@ -51,18 +52,22 @@ if __name__ == '__main__':
 
     envs = [
         {
-            # This is not really a rewarding frozen lake env, but the custom class has extra functionality
-            'env': environments.get_rewarding_no_reward_frozen_lake_environment(),
-            'name': 'frozen_lake',
-            'readable_name': 'Frozen Lake (8x8)',
+            'env': environments.get_large_rewarding_frozen_lake_environment(),
+            'name': 'large_frozen_lake',
+            'readable_name': 'Frozen Lake (18x20)',
         },
         {
-            'env': environments.get_large_rewarding_no_reward_frozen_lake_environment(),
+            'env': environments.get_large_rewarding_frozen_lake_slipper_environment(),
             'name': 'large_frozen_lake',
-            'readable_name': 'Frozen Lake (20x20)',
+            'readable_name': 'Frozen Lake (18x20)',
         },
         {
             'env': environments.get_windy_cliff_walking_environment(),
+            'name': 'cliff_walking_windy',
+            'readable_name': 'Cliff Walking (4x12)',
+        },
+        {
+            'env': environments.get_cliff_walking_environment(),
             'name': 'cliff_walking',
             'readable_name': 'Cliff Walking (4x12)',
         }

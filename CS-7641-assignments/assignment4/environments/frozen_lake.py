@@ -11,44 +11,27 @@ RIGHT = 2
 UP = 3
 
 MAPS = {
-    "4x4": [
-        "SFFF",
-        "FHFH",
-        "FFFH",
-        "HFFG"
-    ],
-    "8x8": [
-        "SFFFFFFF",
-        "FFFFFFFF",
-        "FFFHFFFF",
-        "FFFFFHFF",
-        "FFFHFFFF",
-        "FHHFFFHF",
-        "FHFFHFHF",
-        "FFFHFFFG"
-    ],
-    "20x20": [
-        "SFFFFFFHHHFFFFFFFFFF",
-        "FFFFFFFFFFFFFFFFHHFF",
-        "FFFHFFFFFFFHHFFFFFFF",
-        "FFFFFHFFFFFFFFFFHHFF",
-        "FFFFFHFFFFFFFFFFHHFF",
-        "FFFFFHFFFFFFFFFFHHFF",
-        "FFFFFFFFHFFFFFFFHHFF",
-        "FFFFFHFFFFHHFFFFHHFF",
-        "FFFFFHFFFFFFFFFFHHFF",
-        "FFFFFHFFFFFFFFFFHHFF",
-        "FFFFFFFFFFFHHHHHHHFF",
-        "HHHHFHFFFFFFFFFFHHFF",
-        "FFFFFHFFFFHHHFFFHHFF",
-        "FFFFFFFFFFFFFFFFHHFF",
-        "FFFFFHFFFFFFHFFFHHFF",
-        "FFFFFHFFFFFFFFFFHHFF",
-        "FFFFFFFFFFFHFFFFFFFF",
-        "FHHFFFHFFFFHFFFFFHFF",
-        "FHHFHFHFFFFFFFFFFFFF",
-        "FFFHFFFFFHFFFFHHFHFG"
-    ]
+           "18x20": [
+               "SFFFFFFHHHFFFFFFFFFF",
+               "FFFFFFFFFFFFFFFFHHFF",
+               "FFFHFFFFFFFHHFFFFFFF",
+               "FFFFFHFFFFFFFFFFHHFF",
+               "FFFFFHFFFFFFFFFFHHFF",
+               "FFFFFFFFHFFFFFFFHHFF",
+               "FFFFFHFFFFHHFFFFHHFF",
+               "FFFFFFFFFFFFFFFFHHFF",
+               "FFFFFHFFFFFFFFFFHHFF",
+               "FFFFFFFFFFFHHFHHHHFF",
+               "FHHHFHFFFFFFFFFFHHFF",
+               "FFFFFFFFFFFFFFFFHHFF",
+               "FFFFFHFFFFFFHFFFHHFF",
+               "FFFFFHFFFFFFFFFFHHFF",
+               "FFFFFFFFFFFHFFFFFFFF",
+               "FHHFFFHFFFFHFFFFFHFF",
+               "FHHFHFHFFFFFFFFFFFFF",
+               "FFFHFFFFFHFFFFHHFHFG"
+           ]
+
 }
 
 
@@ -84,7 +67,7 @@ class RewardingFrozenLakeEnv(discrete.DiscreteEnv):
 
     metadata = {'render.modes': ['human', 'ansi']}
 
-    def __init__(self, desc=None, map_name="4x4", rewarding=True, step_reward=-0.1, hole_reward=-1, is_slippery=True):
+    def __init__(self, desc=None, map_name="18x20", rewarding=True, step_reward=-0.1, hole_reward=-1, is_slippery=False):
         if desc is None and map_name is None:
             raise ValueError('Must provide either desc or map_name')
         elif desc is None:
@@ -140,6 +123,9 @@ class RewardingFrozenLakeEnv(discrete.DiscreteEnv):
                                         rew = self.step_reward
                                     elif newletter == b'H':
                                         rew = self.hole_reward
+                                    else:
+                                        if newletter != b'G':  # We don't want to penalise goal
+                                            rew = self.step_reward
                                 li.append((1.0 / 3.0, newstate, rew, done))
                         else:
                             newrow, newcol = inc(row, col, a)
@@ -152,6 +138,9 @@ class RewardingFrozenLakeEnv(discrete.DiscreteEnv):
                                     rew = self.step_reward
                                 elif newletter == b'H':
                                     rew = self.hole_reward
+                                else:
+                                    if newletter != b'G':  # We don't want to penalise goal
+                                        rew = self.step_reward
                             li.append((1.0, newstate, rew, done))
 
         super(RewardingFrozenLakeEnv, self).__init__(nS, nA, P, isd)

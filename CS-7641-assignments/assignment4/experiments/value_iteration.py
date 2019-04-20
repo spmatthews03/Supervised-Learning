@@ -52,7 +52,7 @@ class ValueIterationExperiment(BaseExperiment):
             stats.plot_policies_on_map('{}/images/VI/{}_{}_{}.png'.format(OUTPUT_DIRECTORY, self._details.env_name,
                                                                           discount_factor, '{}_{}'),
                                        map_desc, self._details.env.colors(), self._details.env.directions(),
-                                       'Value Iteration', 'Step', self._details, only_last=True)
+                                       'Value Iteration', 'Step', self._details, only_last=False)
 
             optimal_policy_stats = self.run_policy_and_collect(v, stats.optimal_policy)
             self.log('{}'.format(optimal_policy_stats))

@@ -82,7 +82,7 @@ class QLearnerExperiment(BaseExperiment):
                                                        self._details.env.directions(),
                                                        'Q-Learner', 'Episode', self._details,
                                                        step_size=self.max_episodes / 20.0,
-                                                       only_last=True)
+                                                       only_last=False)
 
                             # We have extra stats about the episode we might want to look at later
                             episode_stats = qs.get_stats()

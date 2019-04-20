@@ -14,7 +14,7 @@ from sklearn.preprocessing import StandardScaler
 import os
 import seaborn as sns
 
-from abc import ABC, abstractmethod
+from abc import ABCMeta, abstractmethod
 
 # TODO: Move this to a common lib?
 OUTPUT_DIRECTORY = './output'
@@ -211,7 +211,7 @@ class DataLoader(ABC):
 class BattingBaseballData(DataLoader):
 
     def __init__(self, path='data/full_data_batters_min_ab2.csv', verbose=False, seed=1):
-        super().__init__(path, verbose, seed)
+        super().__init__(path, verbose)
 
     def _load_data(self):
         self._data = pd.read_csv(self._path, header=0, index_col=0)
@@ -223,22 +223,6 @@ class BattingBaseballData(DataLoader):
         return 'RunRating'
 
     def _preprocess_data(self):
-        # # https://www.ritchieng.com/machinelearning-one-hot-encoding/
-        # to_encode = ['R']
-        # label_encoder = preprocessing.LabelEncoder()
-        # one_hot = preprocessing.OneHotEncoder()
-        #
-        # df = self._data[to_encode]
-        # df = df.apply(label_encoder.fit_transform)
-        #
-        # # https://gist.github.com/ramhiser/982ce339d5f8c9a769a0
-        # # vec_data = pd.DataFrame(one_hot.fit_transform(df[to_encode]).toarray())
-        #
-        # # self._data = self._data.drop(to_encode, axis=1)
-        # #self._data = pd.concat([self._data, vec_data], axis=1)
-        #
-        # # Clean any ?'s from the unencoded columns
-        # #self._data = self._data[( self._data[[1, 2, 7]] != '?').all(axis=1)]
         pass
 
     def pre_training_adjustment(self, train_features, train_classes):
@@ -265,22 +249,6 @@ class PitchingBaseballData(DataLoader):
         return 'ERA<3.5'
 
     def _preprocess_data(self):
-        # # https://www.ritchieng.com/machinelearning-one-hot-encoding/
-        # to_encode = ['R']
-        # label_encoder = preprocessing.LabelEncoder()
-        # one_hot = preprocessing.OneHotEncoder()
-        #
-        # df = self._data[to_encode]
-        # df = df.apply(label_encoder.fit_transform)
-        #
-        # # https://gist.github.com/ramhiser/982ce339d5f8c9a769a0
-        # # vec_data = pd.DataFrame(one_hot.fit_transform(df[to_encode]).toarray())
-        #
-        # # self._data = self._data.drop(to_encode, axis=1)
-        # #self._data = pd.concat([self._data, vec_data], axis=1)
-        #
-        # # Clean any ?'s from the unencoded columns
-        # #self._data = self._data[( self._data[[1, 2, 7]] != '?').all(axis=1)]
         pass
 
     def pre_training_adjustment(self, train_features, train_classes):
@@ -293,155 +261,7 @@ class PitchingBaseballData(DataLoader):
         return train_features, train_classes
 
 
-class CreditApprovalData(DataLoader):
-
-    def __init__(self, path='data/crx.data', verbose=False, seed=1):
-        super().__init__(path, verbose, seed)
-
-    def _load_data(self):
-        self._data = pd.read_csv(self._path, header=None)
-
-    def data_name(self):
-        return 'CreditApprovalData'
-
-    def class_column_name(self):
-        return '12'
-
-    def _preprocess_data(self):
-        # https://www.ritchieng.com/machinelearning-one-hot-encoding/
-        to_encode = [0, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 15]
-        label_encoder = preprocessing.LabelEncoder()
-        one_hot = preprocessing.OneHotEncoder()
-
-        df = self._data[to_encode]
-        df = df.apply(label_encoder.fit_transform)
-
-        # https://gist.github.com/ramhiser/982ce339d5f8c9a769a0
-        vec_data = pd.DataFrame(one_hot.fit_transform(df[to_encode]).toarray())
-
-        self._data = self._data.drop(to_encode, axis=1)
-        self._data = pd.concat([self._data, vec_data], axis=1)
-
-        # Clean any ?'s from the unencoded columns
-        self._data = self._data[( self._data[[1, 2, 7]] != '?').all(axis=1)]
-
-    def pre_training_adjustment(self, train_features, train_classes):
-        return train_features, train_classes
-
-
-class PenDigitData(DataLoader):
-    def __init__(self, path='data/pendigits.csv', verbose=False, seed=1):
-        super().__init__(path, verbose, seed)
-
-    def _load_data(self):
-        self._data = pd.read_csv(self._path, header=None)
-
-    def class_column_name(self):
-        return '16'
-
-    def data_name(self):
-        return 'PendDigitData'
-
-    def _preprocess_data(self):
-        pass
-
-    def pre_training_adjustment(self, train_features, train_classes):
-        return train_features, train_classes
-
-
-class AbaloneData(DataLoader):
-    def __init__(self, path='data/abalone.data', verbose=False, seed=1):
-        super().__init__(path, verbose, seed)
-
-    def _load_data(self):
-        self._data = pd.read_csv(self._path, header=None)
-
-    def data_name(self):
-        return 'AbaloneData'
-
-    def class_column_name(self):
-        return '8'
-
-    def _preprocess_data(self):
-        pass
-
-    def pre_training_adjustment(self, train_features, train_classes):
-        return train_features, train_classes
-
-
-class HTRU2Data(DataLoader):
-    def __init__(self, path='data/HTRU_2.csv', verbose=False, seed=1):
-        super().__init__(path, verbose, seed)
-
-    def _load_data(self):
-        self._data = pd.read_csv(self._path, header=None)
-
-    def data_name(self):
-        return 'HTRU2Data'
-
-    def class_column_name(self):
-        return '8'
-
-    def _preprocess_data(self):
-        pass
-
-    def pre_training_adjustment(self, train_features, train_classes):
-        return train_features, train_classes
-
-
-class SpamData(DataLoader):
-    def __init__(self, path='data/spambase.data', verbose=False, seed=1):
-        super().__init__(path, verbose, seed)
-
-    def _load_data(self):
-        self._data = pd.read_csv(self._path, header=None)
-
-    def data_name(self):
-        return 'SpamData'
-
-    def class_column_name(self):
-        return '57'
-
-    def _preprocess_data(self):
-        pass
-
-    def pre_training_adjustment(self, train_features, train_classes):
-        return train_features, train_classes
-
-
-class StatlogVehicleData(DataLoader):
-    def __init__(self, path='data/statlog.vehicle.csv', verbose=False, seed=1):
-        super().__init__(path, verbose, seed)
-
-    def _load_data(self):
-        self._data = pd.read_csv(self._path, header=None)
-
-    def data_name(self):
-        return 'StatlogVehicleData'
-
-    def class_column_name(self):
-        return '18'
-
-    def _preprocess_data(self):
-        to_encode = [18]
-        label_encoder = preprocessing.LabelEncoder()
-
-        df = self._data[to_encode]
-        df = df.apply(label_encoder.fit_transform)
-
-        self._data = self._data.drop(to_encode, axis=1)
-        self._data = pd.concat([self._data, df], axis=1)
-
-    def pre_training_adjustment(self, train_features, train_classes):
-        return train_features, train_classes
-
 
 if __name__ == '__main__':
-    batting_data = BattingBaseballData(verbose=True)
-    batting_data.load_and_process()
-    
     pitching_data = PitchingBaseballData(verbose=True)
     pitching_data.load_and_process()
-
-    ca_data = CreditApprovalData(verbose=True)
-    ca_data.load_and_process()
